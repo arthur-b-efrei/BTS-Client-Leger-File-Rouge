@@ -34,7 +34,7 @@ const SigninPage = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('isAuthenticated', 'true');
-        router.push('\pages');
+        router.push('/pages');
       } else {
         alert(data.error);
       }
@@ -44,17 +44,20 @@ const SigninPage = () => {
   };
 
   return (
-    <div className="SigninPage">
-      <h1>Se connecter</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+      <h1 className="text-6xl font-extrabold tracking-tight mb-6">Se connecter</h1>
+      
+      <form onSubmit={handleSubmit} className="bg-black p-6 rounded-lg shadow-md w-80">
+      <input
+        type="email"
+       name="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+        className="w-full p-2 mb-4 border rounded bg-white text-black placeholder-gray-800"
         />
+
         <input
           type="password"
           name="password"
@@ -62,11 +65,20 @@ const SigninPage = () => {
           value={formData.password}
           onChange={handleChange}
           required
+          className="w-full p-2 mb-4 border rounded bg-white text-black placeholder-gray-800"
         />
-        <button type="submit">Valider</button>
+        <button 
+          type="submit"
+          className="w-full bg-black text-white hover:bg-white hover:text-black px-4 py-2 rounded-lg font-bold transition-all duration-300"
+        >
+          Valider
+        </button>
       </form>
-      <h2>
-        <Link href="/">Retour</Link>
+
+      <h2 className="">
+        <Link href="/" className="w-full bg-black text-white hover:bg-white hover:text-black px-4 py-2 rounded-lg font-bold transition-all duration-300">
+          Retour
+        </Link>
       </h2>
     </div>
   );

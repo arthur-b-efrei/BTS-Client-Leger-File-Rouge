@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState } from "react";
+import { useRouter } from "next/navigation"; // Import du router
+import Link from "next/link";
 
 const SignupPage = () => {
+  const router = useRouter(); // Initialisation du router
+
   const [formData, setFormData] = useState({
-    pseudo: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-    birthday: '',
-    gender: '',
+    pseudo: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    birthday: "",
+    gender: "",
   });
 
   const handleChange = (e) => {
@@ -25,27 +28,28 @@ const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
       if (response.ok) {
+        router.push("/signin"); // Redirection après succès
       } else {
         alert(data.error);
       }
     } catch (error) {
-      alert('An error occurred :' + error.message);
+      alert("An error occurred: " + error.message);
     }
   };
 
   return (
     <div className="SignupPage">
-      <h1>S'inscrire</h1>
+       <h1 className="text-6xl font-extrabold tracking-tight mb-6">S'inscrire</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -90,26 +94,27 @@ const SignupPage = () => {
         <input
           type="date"
           name="birthday"
-          placeholder="Birthday"
           value={formData.birthday}
           onChange={handleChange}
           required
         />
-        <select
-          name="gender"
-          value={formData.gender}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selectionner votre genre</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
+        <select name="gender" value={formData.gender} onChange={handleChange} required>
+          <option value="">Sélectionner votre genre</option>
+          <option value="male">Homme</option>
+          <option value="female">Femme</option>
+          <option value="other">Autre</option>
         </select>
-        <button type="submit">Valider</button>
+        <button 
+          type="submit"
+          className="w-full bg-black text-white hover:bg-white hover:text-black px-4 py-2 rounded-lg font-bold transition-all duration-300"
+        >
+          Valider
+        </button>
       </form>
       <h2>
-        <Link href="/">Retour</Link>
+      <Link href="/" className="w-full bg-black text-white hover:bg-white hover:text-black px-4 py-2 rounded-lg font-bold transition-all duration-300">
+          Retour
+        </Link>
       </h2>
     </div>
   );

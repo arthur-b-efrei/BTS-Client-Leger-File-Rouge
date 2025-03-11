@@ -1,55 +1,34 @@
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { serialize } from 'cookie'; // Lib pour manipuler les cookies
 
 const prisma = new PrismaClient();
 
 export async function POST(request) {
-  try {
-    const body = await request.json();
-    const { email, password } = body;
+  const body = await request.json();
+  const { email, password } = body;
 
-    // Vérification si l'email et le mot de passe sont fournis
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Veuillez fournir un email et un mot de passe' },
-        { status: 400 }
-      );
-    }
+  const user = await prisma.user.findUnique({ where: { email } });
 
-    // Recherche de l'utilisateur dans la base de données
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Utilisateur introuvable' },
-        { status: 404 }
-      );
-    }
-
-    // Comparaison du mot de passe avec bcrypt
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return NextResponse.json(
-        { error: 'Mot de passe incorrect' },
-        { status: 401 }
-      );
-    }
-
-    // Supprimer le mot de passe de la réponse
-    const { password: _, ...userWithoutPassword } = user;
-
-    return NextResponse.json(
-      { message: 'Connexion réussie', user: userWithoutPassword },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Erreur lors de la connexion:', error);
-    return NextResponse.json(
-      { error: 'Erreur lors de la connexion' },
-      { status: 500 }
-    );
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return NextResponse.json({ error: 'Email ou mot de passe incorrect' }, { status: 401 });
   }
+
+  // Créer un token d'authentification (ici un token simple pour exemple)
+  const token = 'someRandomGeneratedToken';
+
+  // Ajouter le token dans un cookie
+  const cookie = serialize('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Utiliser le cookie sécurisé en production
+    maxAge: 60 * 60 * 24, // Expire dans 24h
+    path: '/',
+  });
+
+  // Réponse avec le cookie
+  const response = NextResponse.json({ message: 'Connexion réussie' });
+  response.headers.set('Set-Cookie', cookie); // Ajouter le cookie à la réponse
+
+  return response;
 }

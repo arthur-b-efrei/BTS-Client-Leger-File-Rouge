@@ -1,113 +1,107 @@
-"use client";
+'use client'; // Ajoutez cette ligne en haut du fichier
 
+import Layout from '../components/Layout';
 import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import {
-  Package,
-  ShoppingCart,
-  ShoppingBag,
-  BarChart2,
-  Menu as MenuIcon,
-  LogOut,
-  User
-} from 'lucide-react';
 
-export default function PurchasesPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const pathname = usePathname();
+export default function Achats() {
+  const [formData, setFormData] = useState({
+    productName: '',
+    quantity: '',
+    reference: '',
+    price: '', // Ajout du champ pour le prix
+  });
 
-  const menuItems = [
-    {
-      title: 'Inventaire',
-      icon: <Package className="w-5 h-5" />,
-      href: '/inventory'
-    },
-    {
-      title: 'Ventes',
-      icon: <ShoppingCart className="w-5 h-5" />,
-      href: '/sales'
-    },
-    {
-      title: 'Achats',
-      icon: <ShoppingBag className="w-5 h-5" />,
-      href: '/purchases'
-    },
-    {
-      title: 'Statistiques',
-      icon: <BarChart2 className="w-5 h-5" />,
-      href: '/statistics'
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/api/purchases', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert('Achat enregistré avec succès !');
+        setFormData({ productName: '', quantity: '', reference: '', price: '' });
+      } else {
+        alert('Erreur lors de l\'enregistrement de l\'achat');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
     }
-  ];
+  };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Top Navigation Bar */}
-      <nav className="bg-[#0a0a0a] border-b border-gray-800 fixed w-full z-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-md hover:bg-[#005bb5] transition-colors"
-              >
-                <MenuIcon className="w-6 h-6" />
-              </button>
-              <h1 className="ml-4 text-xl font-bold">INVENTARY</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <User className="w-5 h-5" />
-                <span className="text-sm font-medium">NOM PRENOM</span>
-              </div>
-              <button className="p-2 rounded-md hover:bg-[#005bb5] transition-colors">
-                <LogOut className="w-5 h-5" />
-              </button>
-            </div>
+    <Layout>
+      <hr className="border-t border-gray-300" />
+      <h1 className="text-3xl font-bold mb-4 mt-3 text-center">Gestion des Achats</h1>
+      <hr className="border-t border-gray-300" />
+      <div className="bg-black shadow-md rounded-lg p-6 w-full overflow-x-hidden">
+        <form className="space-y-0" onSubmit={handleSubmit}>
+          <div>
+            <label className="block mb-2 text-white">Produit</label>
+            <input
+              type="text"
+              name="productName"
+              className="w-full p-2 border rounded text-black"
+              placeholder="Nom du produit"
+              value={formData.productName}
+              onChange={handleChange}
+            />
           </div>
-        </div>
-      </nav>
-
-      {/* Sidebar and Main Content */}
-      <div className="flex pt-16">
-        {/* Sidebar */}
-        <aside
-          className={`fixed left-0 top-16 h-full bg-[#0a0a0a] border-r border-gray-800 transition-all duration-300 ${
-            isSidebarOpen ? 'w-64' : 'w-20'
-          }`}
-        >
-          <nav className="mt-8 space-y-2 px-4">
-            {menuItems.map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  pathname === item.href
-                    ? 'bg-[#005bb5]'
-                    : 'hover:bg-[#005bb5]'
-                }`}
-              >
-                <div>{item.icon}</div>
-                {isSidebarOpen && (
-                  <span className="font-medium">{item.title}</span>
-                )}
-              </Link>
-            ))}
-          </nav>
-        </aside>
-
-        {/* Main Content */}
-        <main
-          className={`flex-1 transition-all duration-300 ${
-            isSidebarOpen ? 'ml-64' : 'ml-20'
-          } p-8`}
-        >
-          <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Achats</h1>
-            {/* Ajoutez ici le contenu spécifique à la page des achats */}
+          <div>
+            <label className="block mb-2 text-white">Quantité</label>
+            <input
+              type="number"
+              name="quantity"
+              className="w-full p-2 border rounded text-black"
+              placeholder="Quantité achetée"
+              value={formData.quantity}
+              onChange={handleChange}
+            />
           </div>
-        </main>
+          <div>
+            <label className="block mb-2 text-white">Référence</label>
+            <input
+              type="number"
+              name="reference"
+              className="w-full p-2 border rounded text-black"
+              placeholder="Référence du produit"
+              value={formData.reference}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-white">Prix</label>
+            <input
+              type="number"
+              name="price"
+              step="0.01"
+              className="w-full p-2 border rounded text-black"
+              placeholder="Prix du produit"
+              value={formData.price}
+              onChange={handleChange}
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Enregistrer l'Achat
+          </button>
+        </form>
       </div>
-    </div>
+    </Layout>
   );
 }
