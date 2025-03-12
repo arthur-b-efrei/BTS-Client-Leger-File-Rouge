@@ -33,8 +33,11 @@ const SigninPage = () => {
 
       const data = await response.json();
       if (response.ok) {
+        // Sauvegarder les informations de l'utilisateur dans localStorage
         localStorage.setItem('isAuthenticated', 'true');
-        router.push('/pages');
+        localStorage.setItem('user', JSON.stringify(data.user)); // Sauvegarder l'utilisateur
+
+        router.push('/profile'); // Rediriger vers la page de profil
       } else {
         alert(data.error);
       }
@@ -48,14 +51,14 @@ const SigninPage = () => {
       <h1 className="text-6xl font-extrabold tracking-tight mb-6">Se connecter</h1>
       
       <form onSubmit={handleSubmit} className="bg-black p-6 rounded-lg shadow-md w-80">
-      <input
-        type="email"
-       name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-        className="w-full p-2 mb-4 border rounded bg-white text-black placeholder-gray-800"
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full p-2 mb-4 border rounded bg-white text-black placeholder-gray-800"
         />
 
         <input

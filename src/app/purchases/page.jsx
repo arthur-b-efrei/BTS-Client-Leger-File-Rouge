@@ -1,14 +1,14 @@
-'use client'; // Ajoutez cette ligne en haut du fichier
+"use client"; // Indique que ce composant est un client React
 
 import Layout from '../components/Layout';
 import { useState } from 'react';
 
-export default function Achats() {
+export default function PurchasesPage() {
   const [formData, setFormData] = useState({
     productName: '',
     quantity: '',
     reference: '',
-    price: '', // Ajout du champ pour le prix
+    price: '',
   });
 
   const handleChange = (e) => {
@@ -21,13 +21,10 @@ export default function Achats() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch('/api/purchases', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 

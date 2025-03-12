@@ -26,21 +26,11 @@ export default function Statistiques() {
         <div className="w-full max-w-md space-y-4">
           <div>
             <label className="block text-base font-semibold mb-2 text-white">Nombre de produits dans l'inventaire</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded bg-white cursor-not-allowed text-white"
-              placeholder="Nombre de produits"
-              readOnly
-            />
+            <p>1</p>
           </div>
           <div>
             <label className="block text-base font-semibold mb-2 text-white">Prix total des produits</label>
-            <input
-              type="text"
-              className="w-full p-2 border rounded bg-white cursor-not-allowed text-white"
-              placeholder="Prix total"
-              readOnly
-            />
+            50000€
           </div>
         </div>
       </div>
