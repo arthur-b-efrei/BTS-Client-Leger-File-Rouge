@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Layout from '../components/Layout';
 import { useState, useEffect } from 'react';
@@ -10,7 +10,7 @@ export default function Profile() {
     // Récupérer les informations utilisateur depuis localStorage
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser)); // Stocker les données de l'utilisateur dans le state
     } else {
       // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
       window.location.href = '/signin';
@@ -24,7 +24,7 @@ export default function Profile() {
   return (
     <Layout>
       <hr />
-      <h1 className="bg-black text-3xl font-bold mb-4 mt-3 text-white">Profile</h1>
+      <h1 className="bg-black text-3xl font-bold mb-4 mt-3 text-white">Profil</h1>
       <hr />
       <div className="bg-black text-white rounded-lg shadow-md p-6 w-full max-w-md mx-auto">
         <div className="space-y-4">
@@ -33,6 +33,9 @@ export default function Profile() {
           <p className="text-xl"><span className="font-semibold">Date de naissance :</span> {new Date(user.birthday).toLocaleDateString()}</p>
           <p className="text-xl"><span className="font-semibold">Genre :</span> {user.gender}</p>
           <p className="text-xl"><span className="font-semibold">Date de création du compte :</span> {new Date(user.created_at).toLocaleDateString()}</p>
+          
+          {/* Afficher le user_id */}
+          <p className="text-xl"><span className="font-semibold">ID utilisateur :</span> {user.user_id}</p>
         </div>
       </div>
     </Layout>

@@ -18,9 +18,10 @@ model user {
   gender     String    @db.VarChar(50)
   created_at DateTime? @default(now()) @db.Timestamp(6)
   last_auth  DateTime? @db.Timestamp(6)
-  sales      sale[]
-  purchases  purchase[]
-  stocks     stock[]
+  sales      sale[]    @relation("UserSales")
+  purchases  purchase[] @relation("UserPurchases")
+  stocks     stock[]   @relation("UserStocks")
+  history    history[] @relation("UserHistory")
 }
 
 model product {
@@ -31,9 +32,9 @@ model product {
   stock_quantity Int     @default(0)
   created_at     DateTime @default(now()) @db.Timestamp(6)
   updated_at     DateTime @updatedAt @db.Timestamp(6)
-  sales          sale[]
-  purchases      purchase[]
-  stocks         stock[]
+  sales          sale[]   @relation("ProductSales")
+  purchases      purchase[] @relation("ProductPurchases")
+  stocks         stock[]   @relation("ProductStocks")
 }
 
 model sale {
@@ -41,9 +42,10 @@ model sale {
   product_id   Int
   quantity     Int
   sale_date    DateTime @default(now()) @db.Timestamp(6)
-  product      product  @relation(fields: [product_id], references: [product_id])
-  user         user     @relation(fields: [user_id], references: [user_id])
+  sales_price  Decimal  @db.Decimal(10, 2)
+  product      product  @relation("ProductSales", fields: [product_id], references: [product_id])
   user_id      Int
+  user         user     @relation("UserSales", fields: [user_id], references: [user_id])
 }
 
 model purchase {
@@ -51,9 +53,9 @@ model purchase {
   product_id   Int
   quantity     Int
   purchase_date DateTime @default(now()) @db.Timestamp(6)
-  product      product  @relation(fields: [product_id], references: [product_id])
-  user         user     @relation(fields: [user_id], references: [user_id])
+  product      product  @relation("ProductPurchases", fields: [product_id], references: [product_id])
   user_id      Int
+  user         user     @relation("UserPurchases", fields: [user_id], references: [user_id])
 }
 
 model stock {
@@ -61,7 +63,23 @@ model stock {
   product_id   Int
   quantity     Int
   movement_date DateTime @default(now()) @db.Timestamp(6)
-  product      product  @relation(fields: [product_id], references: [product_id])
-  user         user     @relation(fields: [user_id], references: [user_id])
+  product      product  @relation("ProductStocks", fields: [product_id], references: [product_id])
   user_id      Int
+  user         user     @relation("UserStocks", fields: [user_id], references: [user_id])
+}
+
+model stat {
+  stat_id      Int      @id @default(autoincrement())
+  total_sales  Int      @default(0)
+  total_revenue Decimal @default(0.00)
+  period       String   @db.VarChar(255)
+  created_at   DateTime @default(now()) @db.Timestamp(6)
+}
+
+model history {
+  history_id   Int      @id @default(autoincrement())
+  action       String   @db.VarChar(255)
+  action_date  DateTime @default(now()) @db.Timestamp(6)
+  user_id      Int
+  user         user     @relation("UserHistory", fields: [user_id], references: [user_id])
 }

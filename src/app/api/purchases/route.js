@@ -1,59 +1,106 @@
-import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function POST(request) {
+// exports des métadonnées
+export const metadata = {
+  title: 'Gestion des Achats',
+  description: 'Page pour gérer les achats',
+};
+
+// Définition du viewport
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
+// La logique pour gérer la route POST
+export async function POST(req) {
   try {
-    const body = await request.json();
-    console.log("Données reçues pour l'achat :", body);
+    // Récupérer les données envoyées dans la requête
+    const { productName, quantity, price, user_id } = await req.json();
+    console.log('Données reçues:', { productName, quantity, price, user_id });
 
-    const { productName, quantity, reference, price } = body;
-
-    // Vérification des champs obligatoires
-    if (!productName || !quantity || !reference || !price) {
-      console.error("Données manquantes :", { productName, quantity, reference, price });
-      return NextResponse.json({ error: "Tous les champs sont requis." }, { status: 400 });
+    // Validation des données reçues
+    if (!productName || !quantity || !price) {
+      return new Response(
+        JSON.stringify({ error: 'Tous les champs sont requis.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Vérifie si le produit existe déjà
+    // Convertir les valeurs en nombres
+    const numericQuantity = parseInt(quantity, 10);
+    const numericPrice = parseFloat(price);
+
+    // Vérifier si le produit existe déjà
     let product = await prisma.product.findFirst({
-      where: { name: productName },
+      where: { name: productName }
     });
 
-    // Si le produit n'existe pas, le créer
+    // Si le produit n'existe pas, on le crée
     if (!product) {
       product = await prisma.product.create({
         data: {
           name: productName,
-          description: "Produit ajouté via achat",
-          price: parseFloat(price),
-          stock_quantity: 0, // On met à 0 pour le moment
-        },
+          price: numericPrice,
+          stock_quantity: 0, // On initialise à 0 car c'est un achat
+        }
       });
-      console.log("Produit créé :", product);
     }
 
-    // Enregistrement de l'achat
+    // Créer l'achat
     const purchase = await prisma.purchase.create({
       data: {
         product_id: product.product_id,
-        quantity: parseInt(quantity),
-        user_id: 1, // À remplacer par l'ID de l'utilisateur connecté
-      },
+        quantity: numericQuantity,
+        user_id: user_id || 1, // Si pas d'utilisateur, on utilise un ID par défaut
+      }
     });
 
-    console.log("Achat enregistré :", purchase);
+    // Mettre à jour le stock
+    await prisma.stock.create({
+      data: {
+        product_id: product.product_id,
+        quantity: numericQuantity,
+        user_id: user_id || 1, // Si pas d'utilisateur, on utilise un ID par défaut
+      }
+    });
 
-    return NextResponse.json(
-      { message: "Achat enregistré avec succès.", purchase },
-      { status: 201 }
+    // Mettre à jour la quantité en stock du produit
+    await prisma.product.update({
+      where: { product_id: product.product_id },
+      data: {
+        stock_quantity: {
+          increment: numericQuantity
+        }
+      }
+    });
+
+    // Enregistrer l'action dans l'historique
+    if (user_id) {
+      await prisma.history.create({
+        data: {
+          action: `Achat de ${numericQuantity} ${productName}`,
+          user_id: user_id
+        }
+      });
+    }
+
+    // Si tout va bien, renvoyer un message de succès
+    return new Response(
+      JSON.stringify({ 
+        message: 'Achat enregistré avec succès.',
+        product: product,
+        purchase: purchase
+      }),
+      { status: 201, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error("Erreur lors de l'enregistrement de l'achat :", error);
-    return NextResponse.json(
-      { error: "Erreur lors de l'enregistrement de l'achat" },
-      { status: 500 }
+    console.error('Erreur lors de l\'enregistrement de l\'achat :', error);
+    return new Response(
+      JSON.stringify({ error: 'Erreur serveur lors de l\'enregistrement de l\'achat', details: error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }

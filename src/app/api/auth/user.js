@@ -1,24 +1,22 @@
 import { PrismaClient } from "@prisma/client";
-import { getToken } from "next-auth/jwt"; // Utilisation de next-auth ou un autre mécanisme de gestion des tokens
 
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
-    // Récupérer le token d'authentification (par exemple JWT)
-    const token = await getToken({ req, secret: process.env.JWT_SECRET });
+    // Récupérer l'objet 'user' depuis localStorage côté client
+    const user = JSON.parse(req.headers['x-user']); // Passe l'utilisateur depuis le client avec les headers
 
-    if (!token) {
+    if (!user || !user.user_id) {
       return res.status(401).json({ error: "Utilisateur non authentifié." });
     }
 
-    // Récupérer l'utilisateur à partir du token (on suppose que le token contient l'ID de l'utilisateur)
-    const userId = token.userId; // Ou une autre propriété selon ton token
+    const userId = user.user_id; // Utilise user.user_id ici
 
     try {
       const user = await prisma.user.findUnique({
         where: {
-          user_id: userId,
+          user_id: userId, // Recherche de l'utilisateur dans la base de données avec user_id
         },
         select: {
           user_id: true,

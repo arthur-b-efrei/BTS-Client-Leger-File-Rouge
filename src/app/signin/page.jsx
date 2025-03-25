@@ -31,13 +31,19 @@ const SigninPage = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      const text = await response.text(); // Lire la réponse en texte pour débogage
+      console.log('Response Text:', text); // Afficher la réponse brute dans la console
+
+      // Réessayer de récupérer les données JSON après avoir lu le texte
+      const data = JSON.parse(text); // Utiliser JSON.parse au lieu de response.json() si vous avez déjà lu le texte
+
       if (response.ok) {
         // Sauvegarder les informations de l'utilisateur dans localStorage
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('user', JSON.stringify(data.user)); // Sauvegarder l'utilisateur
+        localStorage.setItem('user_id', data.user.id); // Sauvegarder l'user_id
 
-        router.push('/profile'); // Rediriger vers la page de profil
+        router.push('/inventory'); // Rediriger vers la page de profil
       } else {
         alert(data.error);
       }
@@ -78,7 +84,7 @@ const SigninPage = () => {
         </button>
       </form>
 
-      <h2 className="">
+      <h2 className="mt-4">
         <Link href="/" className="w-full bg-black text-white hover:bg-white hover:text-black px-4 py-2 rounded-lg font-bold transition-all duration-300">
           Retour
         </Link>
