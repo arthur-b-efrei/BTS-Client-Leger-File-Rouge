@@ -23,7 +23,12 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Inventary - Gestion de stock",
   description: "Application de gestion d'inventaire moderne et efficace",
-  viewport: "width=device-width, initial-scale=1",
+};
+
+// Nouveau export pour le viewport, à part
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 // Composant principal de layout utilisé par toutes les pages de l'application (App Router)
