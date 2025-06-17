@@ -39,13 +39,13 @@
 
     return (
       <Layout>
-        <hr/>
+        <hr className='border-t border-gray-300'/>
         <h1 className="bg-black text-3xl font-bold mb-4 mt-3 text-center">Statistiques</h1>
-        <hr/>
+        <hr className='border-t border-gray-300'/>
 
-        <div className="grid md:grid-cols-2  gap-6 p-4 w-full">
+        <div className="grid md:grid-cols-2  gap-4 p-2 w-full">
           {/* Statistiques Principales */}
-          <div className="bg-black p-6 rounded-lg text-white">
+          <div className="bg-black shadow-md rounded-lg p-6 w-full overflow-x-hidden">
             <h2 className="text-2xl font-bold mb-4">Vue d'Ensemble</h2>
             <div className="space-y-3">
               <div className="flex justify-between">

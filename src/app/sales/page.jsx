@@ -14,6 +14,7 @@ export default function Ventes() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [searchTerms, setSearchTerms] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +22,11 @@ export default function Ventes() {
       ...formData,
       [name]: value,
     });
+
+    // Add setSearchTerms when typing in the product name
+    if (name === 'productName') {
+      setSearchTerms(value);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -59,6 +65,7 @@ export default function Ventes() {
           quantity: formData.quantity,
           price: formData.price,
           user_id: userId,
+          searchTerms: searchTerms, // Include searchTerms in the request body
         }),
       });
 
@@ -67,6 +74,7 @@ export default function Ventes() {
       if (response.ok) {
         setSuccess('Vente enregistrée avec succès !');
         setFormData({ productName: '', quantity: '', price: '' });
+        setSearchTerms(''); // Reset search terms after successful submission
       } else {
         setError(data.error || 'Erreur lors de l\'enregistrement de la vente');
       }

@@ -1,5 +1,5 @@
+//Première page du site qui redirige vers la page de connexion ou d'inscription
 import Link from 'next/link';
-
 export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">

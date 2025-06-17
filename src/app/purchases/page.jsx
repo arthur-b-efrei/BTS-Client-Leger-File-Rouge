@@ -67,10 +67,6 @@ export default function Achats() {
       if (response.ok) {
         setSuccess('Achat enregistré avec succès !');
         setFormData({ productName: '', quantity: '', price: '' });
-        
-        // Optionnel: Rafraîchir la page ou rediriger vers une autre page
-        // router.refresh();
-        // setTimeout(() => router.push('/inventaire'), 1500);
       } else {
         setError(data.error || 'Erreur lors de l\'enregistrement de l\'achat');
       }

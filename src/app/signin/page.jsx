@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const SigninPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ 
     email: '',
     password: '',
   });
