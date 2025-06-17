@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// La logique pour gérer la route POST
 export async function POST(req) {
   try {
     // Récupérer les données envoyées dans la requête
@@ -90,5 +89,7 @@ export async function POST(req) {
       JSON.stringify({ error: 'Erreur serveur lors de l\'enregistrement de l\'achat', details: error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 }
