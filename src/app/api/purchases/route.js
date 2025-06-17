@@ -2,18 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// exports des métadonnées
-export const metadata = {
-  title: 'Gestion des Achats',
-  description: 'Page pour gérer les achats',
-};
-
-// Définition du viewport
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-};
-
 // La logique pour gérer la route POST
 export async function POST(req) {
   try {
