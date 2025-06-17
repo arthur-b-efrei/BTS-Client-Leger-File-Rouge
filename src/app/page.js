@@ -15,7 +15,7 @@ export default function HomePage() {
           href="/signup" 
           className="block text-xl hover:text-blue-600 transition-colors"
         >
-          S'inscrire
+          S&apos;inscrire
         </Link>
       </div>
     </div>

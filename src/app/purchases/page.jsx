@@ -121,7 +121,7 @@ export default function Achats() {
             />
           </div>
           <div>
-            <label className="block mb-2 text-white">Prix d'achat</label>
+            <label className="block mb-2 text-white">Prix d&apos;achat</label>
             <input
               type="number"
               name="price"
@@ -139,7 +139,7 @@ export default function Achats() {
             className="w-full bg-black text-white px-4 py-2 rounded hover:bg-white disabled:bg-blue-300"
             disabled={loading}
           >
-            {loading ? 'Enregistrement en cours...' : 'Enregistrer l\'Achat'}
+            {loading ? 'Enregistrement en cours...' : 'Enregistrer l&apos;Achat'}
           </button>
         </form>
       </div>

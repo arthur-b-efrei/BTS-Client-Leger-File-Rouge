@@ -115,7 +115,7 @@ export default function Inventaire() {
   return (
     <Layout>
       <hr className="border-t border-gray-300" />
-      <h1 className="text-3xl font-bold mb-4 mt-3 text-center">Gestion de l'Inventaire</h1>
+      <h1 className="text-3xl font-bold mb-4 mt-3 text-center">Gestion de l&apos;Inventaire</h1>
       <hr className="border-t border-gray-300" />
       
       {/* Barre de recherche centrée */}

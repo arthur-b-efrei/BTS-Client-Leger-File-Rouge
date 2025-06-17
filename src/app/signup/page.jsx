@@ -49,7 +49,7 @@ const SignupPage = () => {
 
   return (
     <div className="SignupPage">
-       <h1 className="text-6xl font-extrabold tracking-tight mb-6">S'inscrire</h1>
+       <h1 className="text-6xl font-extrabold tracking-tight mb-6">S&apos;inscrire</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

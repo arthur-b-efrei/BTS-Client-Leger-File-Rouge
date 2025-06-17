@@ -12,5 +12,5 @@ export default function Dashboard() {
     if (!authToken) {
       router.replace("/signin"); // Redirige et empêche le retour arrière
     }
-  }, []);
+  }, [router]);
 }

@@ -51,7 +51,7 @@ export default function Home() {
         <div className="bg-black text-white p-6 rounded shadow-md">
           <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Rapport des Ventes, Achats et Stocks</h2>
           <p className="text-white">
-            Chiffre d'affaires : {typeof stats.chiffreAffaires === 'number' ? stats.chiffreAffaires.toFixed(2) : '0.00'} €
+            Chiffre d&apos;affaires : {typeof stats.chiffreAffaires === 'number' ? stats.chiffreAffaires.toFixed(2) : '0.00'} €
           </p>
           <p className="text-white">
             Bénéfices : {typeof stats.benefices === 'number' ? stats.benefices.toFixed(2) : '0.00'} €
@@ -63,7 +63,7 @@ export default function Home() {
             Nombre de ventes : {stats.nombreVentes}
           </p>
           <p className="text-white">
-            Nombre d'achats : {stats.nombreAchats}
+            Nombre d&apos;achats : {stats.nombreAchats}
           </p>
         </div>
       </div>

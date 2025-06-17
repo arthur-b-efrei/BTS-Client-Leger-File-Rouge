@@ -46,7 +46,7 @@
         <div className="grid md:grid-cols-2  gap-4 p-2 w-full">
           {/* Statistiques Principales */}
           <div className="bg-black shadow-md rounded-lg p-6 w-full overflow-x-hidden">
-            <h2 className="text-2xl font-bold mb-4">Vue d'Ensemble</h2>
+            <h2 className="text-2xl font-bold mb-4">Vue d&apos;Ensemble</h2>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span>Nombre de Produits</span>
@@ -57,7 +57,7 @@
                 <span>{typeof stats.valeurStockTotal === 'number' ? stats.valeurStockTotal.toFixed(2) : '0.00'} €</span>
               </div>
               <div className="flex justify-between">
-                <span>Chiffre d'Affaires</span>
+                <span>Chiffre d&apos;Affaires</span>
                 <span>{typeof stats.chiffreAffaires === 'number' ? stats.chiffreAffaires.toFixed(2) : '0.00'} €</span>
               </div>
               <div className="flex justify-between">
