@@ -40,12 +40,12 @@
     return (
       <Layout>
         <hr className='border-t border-gray-300'/>
-        <h1 className="bg-black text-3xl font-bold mb-4 mt-3 text-center">Statistiques</h1>
+        <h1 className="text-3xl font-bold mb-4 mt-3 text-center">Statistiques</h1>
         <hr className='border-t border-gray-300'/>
+        <div className="grid md:grid-cols-2 gap-2 p-2 w-full overflow-x-hidden max-w-screen overflow-y-visible">
 
-        <div className="grid md:grid-cols-2  gap-4 p-2 w-full">
           {/* Statistiques Principales */}
-          <div className="bg-black shadow-md rounded-lg p-6 w-full overflow-x-hidden">
+          <div className="bg-black shadow-md rounded-lg p-2 w-full overflow-x-hidden">
             <h2 className="text-2xl font-bold mb-4">Vue d&apos;Ensemble</h2>
             <div className="space-y-3">
               <div className="flex justify-between">

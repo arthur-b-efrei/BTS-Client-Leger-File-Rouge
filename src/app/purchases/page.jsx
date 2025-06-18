@@ -139,7 +139,7 @@ export default function Achats() {
             className="w-full bg-black text-white px-4 py-2 rounded hover:bg-white disabled:bg-blue-300"
             disabled={loading}
           >
-            {loading ? 'Enregistrement en cours...' : 'Enregistrer l&apos;Achat'}
+            {loading ? 'Enregistrement en cours...' : 'Enregistrer Achat'}
           </button>
         </form>
       </div>
